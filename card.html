@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holiday Card</title>
+    <style>
+        @font-face {
+            font-family: 'epson';
+            src: url('./assets/epmarugo.ttf');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .card {
+            background-color: lightgray;
+            border: 4px outset #c8c8c8;
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+            padding: 60px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Christmas lights border using PCoTandyLogo.png */
+        .border-light {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-image: url('./assets/PCoTandyLogo.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .card::before {
+            content: '';
+            /* background-image: url('./assets/sno2.gif'); */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .card-content {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .card-header img {
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .greeting {
+            font-size: 2.5em;
+            color: #8B0000;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .message {
+            font-size: 1.4em;
+            line-height: 1.6;
+            text-align: center;
+            color: #333;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .signature {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 1.3em;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .signature img {
+            max-width: 200px;
+            height: auto;
+            margin-top: 10px;
+        }
+
+        .template-space {
+            border: 2px dashed #ccc;
+            background-color: #ffffff;
+            padding: 20px;
+            margin: 10px 0;
+            min-height: 60px;
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
+
+        .template-logo-space {
+            border: 2px dashed #ccc;
+            background-color: #ffffff;
+            padding: 20px;
+            margin: 10px 0;
+            min-height: 120px;
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .template-message-space {
+            border: 2px dashed #ccc;
+            background-color: #ffffff;
+            padding: 20px;
+            margin: 10px 0;
+            min-height: 200px;
+            text-align: left;
+            color: #999;
+            font-style: italic;
+            line-height: 2;
+            background-image: repeating-linear-gradient(
+                transparent,
+                transparent 1.5em,
+                #e0e0e0 1.5em,
+                #e0e0e0 calc(1.5em + 1px)
+            );
+        }
+
+        @media print {
+            body {
+                background-color: white;
+            }
+            .card-selector {
+                display: none;
+            }
+            .card-container {
+                gap: 0;
+            }
+            .card {
+                box-shadow: none;
+                page-break-after: always;
+            }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-image: url('./assets/sparkle1.webp');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.6;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.2); }
+        }
+
+        .sparkle-1 { top: 10%; left: 5%; animation-delay: 0s; }
+        .sparkle-2 { top: 20%; right: 10%; animation-delay: 0.5s; }
+        .sparkle-3 { bottom: 15%; left: 8%; animation-delay: 1s; }
+        .sparkle-4 { bottom: 25%; right: 5%; animation-delay: 1.5s; }
+
+        .card-selector {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .card-selector button {
+            background-color: #c8c8c8;
+            border: 2px outset #000;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .card-selector button:hover {
+            background-color: #b8b8b8;
+        }
+
+        .card-selector button:active {
+            border-style: inset;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="card-container">
+        <div class="card-selector">
+            <button onclick="showCard('cybernetics')">Tandy Cybernetics Arm</button>
+            <button onclick="showCard('tandy')">Tandy</button>
+            <button onclick="showCard('template')">Blank Template</button>
+        </div>
+
+        <!-- Tandy Cybernetics Arm Card -->
+        <div id="card-cybernetics" class="card">
+            <div class="sparkle sparkle-1"></div>
+            <div class="sparkle sparkle-2"></div>
+            <div class="sparkle sparkle-3"></div>
+            <div class="sparkle sparkle-4"></div>
+            <div class="card-content">
+                <div class="card-header">
+                    <img src="assets/cybernetics.png" alt="Tandy Cybernetics Arm">
+                    <div class="greeting">Happy Holidays!</div>
+                </div>
+                <div class="message">
+                    Wishing you joy, peace, and wonderful surprises this holiday season!<br><br>
+                    Thank you for being part of our community.
+                </div>
+                <div class="signature">
+                    <div>From the Tandy Cybernetics Arm</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tandy Card -->
+        <div id="card-tandy" class="card hidden">
+            <div class="sparkle sparkle-1"></div>
+            <div class="sparkle sparkle-2"></div>
+            <div class="sparkle sparkle-3"></div>
+            <div class="sparkle sparkle-4"></div>
+            <div class="card-content">
+                <div class="card-header">
+                    <img src="assets/TandyBanner_CT.png" alt="Tandy">
+                    <div class="greeting">Happy Holidays!</div>
+                </div>
+                <div class="message">
+                    Wishing you joy, peace, and wonderful surprises this holiday season!<br><br>
+                    Thank you for being part of our community.
+                </div>
+                <div class="signature">
+                    <div>From Tandy</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blank Template Card -->
+        <div id="card-template" class="card hidden">
+            <div class="sparkle sparkle-1"></div>
+            <div class="sparkle sparkle-2"></div>
+            <div class="sparkle sparkle-3"></div>
+            <div class="sparkle sparkle-4"></div>
+            <div class="card-content">
+                <div class="card-header">
+                    <div class="template-logo-space">
+                        <span style="font-size: 0.9em;">(Logo or image space)</span>
+                    </div>
+                    <div class="greeting">
+                        <div class="template-space" style="font-size: 2em; color: #8B0000;">
+                            (Greeting)
+                        </div>
+                    </div>
+                </div>
+                <div class="message">
+                    <div class="template-message-space">
+                        (Write your message here)
+                    </div>
+                </div>
+                <div class="signature">
+                    <div class="template-space" style="font-size: 1.3em;">
+                        From ________________
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Christmas light colors (hue-rotate values)
+        const lightColors = [0, 120, 240, 60, 300, 180]; // Blue, Green, Red/Magenta, Yellow, Pink, Cyan
+
+        function createBorderLights(card) {
+            const cardWidth = 800;
+            const cardHeight = 600;
+            const lightSize = 25;
+            const insideOffset = 10; // Distance from the inside edge of the border
+
+            // Calculate spacing to evenly distribute lights
+            const availableWidth = cardWidth - (insideOffset * 2);
+            const availableHeight = cardHeight - (insideOffset * 2);
+            const numTopLights = Math.floor(availableWidth / 30);
+            const numBottomLights = numTopLights; // Match top
+            const numLeftLights = Math.floor(availableHeight / 30);
+            const numRightLights = numLeftLights; // Match left
+            
+            const topSpacing = availableWidth / (numTopLights - 1);
+            const bottomSpacing = availableWidth / (numBottomLights - 1);
+            const leftSpacing = availableHeight / (numLeftLights - 1);
+            const rightSpacing = availableHeight / (numRightLights - 1);
+
+            let lightIndex = 0;
+
+            // Top border
+            for (let i = 0; i < numTopLights; i++) {
+                const light = document.createElement('div');
+                light.className = 'border-light';
+                light.style.left = `${insideOffset + i * topSpacing}px`;
+                light.style.top = `${insideOffset}px`;
+                light.style.filter = `hue-rotate(${lightColors[lightIndex % lightColors.length]}deg)`;
+                card.appendChild(light);
+                lightIndex++;
+            }
+
+            // Right border
+            for (let i = 0; i < numRightLights; i++) {
+                const light = document.createElement('div');
+                light.className = 'border-light';
+                light.style.right = `${insideOffset}px`;
+                light.style.top = `${insideOffset + i * rightSpacing}px`;
+                light.style.filter = `hue-rotate(${lightColors[lightIndex % lightColors.length]}deg)`;
+                card.appendChild(light);
+                lightIndex++;
+            }
+
+            // Bottom border - align with top
+            for (let i = 0; i < numBottomLights; i++) {
+                const light = document.createElement('div');
+                light.className = 'border-light';
+                light.style.left = `${insideOffset + i * bottomSpacing}px`;
+                light.style.bottom = `${insideOffset}px`;
+                light.style.filter = `hue-rotate(${lightColors[lightIndex % lightColors.length]}deg)`;
+                card.appendChild(light);
+                lightIndex++;
+            }
+
+            // Left border
+            for (let i = 0; i < numLeftLights; i++) {
+                const light = document.createElement('div');
+                light.className = 'border-light';
+                light.style.left = `${insideOffset}px`;
+                light.style.top = `${insideOffset + i * leftSpacing}px`;
+                light.style.filter = `hue-rotate(${lightColors[lightIndex % lightColors.length]}deg)`;
+                card.appendChild(light);
+                lightIndex++;
+            }
+        }
+
+        function showCard(cardType) {
+            // Hide all cards
+            document.querySelectorAll('.card').forEach(card => {
+                card.classList.add('hidden');
+            });
+            
+            // Show selected card
+            document.getElementById(`card-${cardType}`).classList.remove('hidden');
+        }
+
+        // Create border lights for all cards
+        document.querySelectorAll('.card').forEach(card => {
+            createBorderLights(card);
+        });
+
+        // Initialize with first card
+        showCard('cybernetics');
+    </script>
+</body>
+</html>
