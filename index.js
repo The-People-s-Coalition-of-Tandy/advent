@@ -1,31 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
     const gifts = document.querySelectorAll('.gift');
     const today = new Date().getDate();
-    const testMode = localStorage.getItem('test-mode') === 'true';
+    // const testMode = localStorage.getItem('test-mode') === 'true';
 
-    if (testMode) {
+    // if (testMode) {
         // In test mode, enable all gifts
-        gifts.forEach((gift, i) => {
-            const day = i + 1;
-            if (localStorage.getItem(`gift-${day}`)) {
-                gift.classList.add('opened');
-            }
-            gift.addEventListener('click', () => {
-                openGift(gift, day);
-            });
-        });
-    } else {
-        // Normal mode: only enable gifts up to today
+        // gifts.forEach((gift, i) => {
+        //     const day = i + 1;
+        //     if (localStorage.getItem(`gift-${day}`)) {
+        //         gift.classList.add('opened');
+        //     }
+        //     gift.addEventListener('click', () => {
+        //         openGift(gift, day);
+        //     });
+        // });
+    // } else {
+       
+    // Normal mode: only enable gifts up to today
         for (let i = 0; i < today; i++) {
             if (localStorage.getItem(`gift-${i + 1}`)) {
                 gifts[i].classList.add('opened');
             } else {
                 gifts[i].addEventListener('click', () => {
                     openGift(gifts[i], i + 1);
-                });
-            }
+            });
         }
     }
+    // }
 
     // get the album of the day
     const albumOfTheDay = document.getElementById('albumOfTheDay');
@@ -215,19 +216,19 @@ function downloadGift(url, filename) {
 }
 
  // DELETE WHEN DONE IS FOR TESTING ONLY
-document.addEventListener('keydown', (event) => {
+// document.addEventListener('keydown', (event) => {
     // Press 'c' or 'C' to clear all opened gifts and test mode
-    if (event.key === 'c' || event.key === 'C') {
-        Object.keys(localStorage).forEach(key => {
-            if (key.startsWith('gift-') || key === 'test-mode') {
-                localStorage.removeItem(key);
-            }
-        });
-        location.reload();
-    }
+    // if (event.key === 'c' || event.key === 'C') {
+    //     Object.keys(localStorage).forEach(key => {
+    //         if (key.startsWith('gift-') || key === 'test-mode') {
+    //             localStorage.removeItem(key);
+    //         }
+    //     });
+    //     location.reload();
+    // }
     // Press 't' or 'T' to enable all gifts for testing
-    if (event.key === 't' || event.key === 'T') {
-        localStorage.setItem('test-mode', 'true');
-        location.reload();
-    }
-});
+    // if (event.key === 't' || event.key === 'T') {
+    //     localStorage.setItem('test-mode', 'true');
+    //     location.reload();
+    // }
+// });
